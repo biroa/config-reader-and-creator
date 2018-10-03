@@ -1,0 +1,62 @@
+# DEV - Main
+
+###############
+# Beanstalkd queue:listens
+###############
+
+# dev
+* * * * * if ! ps aux | grep 'queue:listen --queue=dev_travelweekly' | grep -vq grep; then php /var/www/travelweekly/api_v2/dev/current/artisan queue:listen --queue=dev_travelweekly --env=dev --tries=3; fi
+* * * * * if ! ps aux | grep 'queue:listen --queue=dev_thecaterer' | grep -vq grep; then php /var/www/thecaterer/api/dev/current/artisan queue:listen --queue=dev_thecaterer --env=dev --tries=3; fi
+# uat
+* * * * * if ! ps aux | grep 'queue:listen --queue=uat_travelweekly' | grep -vq grep; then php /var/www/travelweekly/api_v2/uat/current/artisan queue:listen --queue=uat_travelweekly --env=uat --tries=3; fi
+* * * * * if ! ps aux | grep 'queue:listen --queue=uat_thecaterer' | grep -vq grep; then php /var/www/thecaterer/api/uat/current/artisan queue:listen --queue=uat_thecaterer --env=uat --tries=3; fi
+# stg
+* * * * * if ! ps aux | grep 'queue:listen --queue=stg_travelweekly' | grep -vq grep; then php /var/www/travelweekly/api_v2/stg/current/artisan queue:listen --queue=stg_travelweekly --env=stg --tries=3; fi
+* * * * * if ! ps aux | grep 'queue:listen --queue=stg_thecaterer' | grep -vq grep; then php /var/www/thecaterer/api/stg/current/artisan queue:listen --queue=stg_thecaterer --env=stg --tries=3; fi
+
+###############
+# wp-crons
+###############
+# dev
+* * * * * php /var/www/travelweekly/wp_cms/dev/current/web/wp/wp-cron.php > /dev/null 2>&1
+* * * * * php /var/www/thecaterer/wp_cms/dev/current/web/wp/wp-cron.php > /dev/null 2>&1
+
+# uat
+* * * * * php /var/www/travelweekly/wp_cms/uat/current/web/wp/wp-cron.php > /dev/null 2>&1
+* * * * * php /var/www/thecaterer/wp_cms/uat/current/web/wp/wp-cron.php > /dev/null 2>&1
+
+# stg
+* * * * * php /var/www/travelweekly/wp_cms/stg/current/web/wp/wp-cron.php > /dev/null 2>&1
+* * * * * php /var/www/thecaterer/wp_cms/stg/current/web/wp/wp-cron.php > /dev/null 2>&1
+
+###############
+# sitemap:generates
+###############
+
+## Only for travelWeekly
+
+# dev
+0 */6 * * * if ! ps auwwx | grep "app:sitemap:generate --env=dev" | grep -v grep; then /var/www/travelweekly/api_v2/dev/current/bin/console app:sitemap:generate --env=dev --z=travelweekly ; fi
+# uat
+0 */6 * * * if ! ps auwwx | grep "app:sitemap:generate --env=uat" | grep -v grep; then /var/www/travelweekly/api_v2/uat/current/bin/console app:sitemap:generate --env=uat --z=travelweekly ; fi
+# stg
+0 */6 * * * if ! ps auwwx | grep "app:sitemap:generate --env=stg" | grep -v grep; then /var/www/travelweekly/api_v2/stg/current/bin/console app:sitemap:generate --env=stg --z=travelweekly ; fi
+
+###############
+# forwardkeys:fetchData
+###############
+
+## Only for travelWeekly
+
+# dev
+0 8 * * * if ! ps auwwx | grep "forwardkeys:fetchData --env=dev" | grep -v grep; then /var/www/travelweekly/api_v2/dev/current/bin/console forwardkeys:fetchData  --env=dev --z=travelweekly; fi
+0 11 * * * if ! ps auwwx | grep "forwardkeys:fetchData --env=dev" | grep -v grep; then /var/www/travelweekly/api_v2/dev/current/bin/console forwardkeys:fetchData  --env=dev --z=travelweekly; fi
+
+# uat
+0 8 * * * if ! ps auwwx | grep "forwardkeys:fetchData --env=uat" | grep -v grep; then /var/www/travelweekly/api_v2/uat/current/bin/console forwardkeys:fetchData  --env=uat --z=travelweekly; fi
+0 11 * * * if ! ps auwwx | grep "forwardkeys:fetchData --env=uat" | grep -v grep; then /var/www/travelweekly/api_v2/uat/current/bin/console forwardkeys:fetchData  --env=uat --z=travelweekly; fi
+
+# stg
+0 8 * * * if ! ps auwwx | grep "forwardkeys:fetchData --env=stg" | grep -v grep; then /var/www/travelweekly/api_v2/stg/current/bin/console forwardkeys:fetchData  --env=stg --z=travelweekly; fi
+0 11 * * * if ! ps auwwx | grep "forwardkeys:fetchData --env=stg" | grep -v grep; then /var/www/travelweekly/api_v2/stg/current/bin/console forwardkeys:fetchData  --env=stg --z=travelweekly; fi
+

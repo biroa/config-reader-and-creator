@@ -1,0 +1,59 @@
+# DEV - Remaining
+
+###############
+# sitemap:generates
+###############
+
+## Only for weAreConnections
+
+# dev
+0 */6 * * * if ! ps auwwx | grep "app:sitemap:generate --env=dev" | grep -v grep; then /var/www/weareconnections/api/dev/current/bin/console app:sitemap:generate --env="dev" --z="weareconnections"; fi
+# uat
+0 */6 * * * if ! ps auwwx | grep "app:sitemap:generate --env=uat" | grep -v grep; then /var/www/weareconnections/api/uat/current/bin/console app:sitemap:generate --env="uat" --z="weareconnections"; fi
+# stg
+0 */6 * * * if ! ps auwwx | grep "app:sitemap:generate --env=stg" | grep -v grep; then /var/www/weareconnections/api/stg/current/bin/console app:sitemap:generate --env="stg" --z="weareconnections"; fi
+
+###############
+# import
+###############
+
+## Only for weAreConnections
+
+# dev
+0 */6 * * * if ! ps auwwx | grep "app:import:blogs --env=dev" | grep -v grep; then /var/www/weareconnections/api/dev/current/bin/console app:import:blogs --env="dev" ; fi
+
+# uat
+0 */6 * * * if ! ps auwwx | grep "app:import:blogs --env=uat" | grep -v grep; then /var/www/weareconnections/api/uat/current/bin/console app:import:blogs --env="uat" ; fi
+
+# stg
+0 */6 * * * if ! ps auwwx | grep "app:import:blogs --env=stg" | grep -v grep; then /var/www/weareconnections/api/stg/current/bin/console app:import:blogs --env="stg" ; fi
+
+###############
+# Beanstalkd queue:listens
+###############
+
+# ConnectingTravel
+* * * * * if ! ps aux | grep 'queue:listen --queue=dev_connectingtravel' | grep -vq grep; then php /var/www/connectingtravel/api/dev/current/artisan queue:listen --queue=dev_connectingtravel --env=dev --tries=3; fi
+* * * * * if ! ps aux | grep 'queue:listen --queue=uat_connectingtravel' | grep -vq grep; then php /var/www/connectingtravel/api/uat/current/artisan queue:listen --queue=uat_connectingtravel --env=uat --tries=3; fi
+* * * * * if ! ps aux | grep 'queue:listen --queue=stg_connectingtravel' | grep -vq grep; then php /var/www/connectingtravel/api/stg/current/artisan queue:listen --queue=stg_connectingtravel --env=stg --tries=3; fi
+
+# Travolution
+* * * * * if ! ps aux | grep 'queue:listen --queue=dev_travolution' | grep -vq grep; then php /var/www/travolution/api/dev/current/artisan queue:listen --queue=dev_travolution --env=dev --tries=3; fi
+* * * * * if ! ps aux | grep 'queue:listen --queue=uat_travolution' | grep -vq grep; then php /var/www/travolution/api/uat/current/artisan queue:listen --queue=uat_travolution --env=uat --tries=3; fi
+* * * * * if ! ps aux | grep 'queue:listen --queue=stg_travolution' | grep -vq grep; then php /var/www/travolution/api/stg/current/artisan queue:listen --queue=stg_travolution --env=stg --tries=3; fi
+
+# TravelGbi
+* * * * * if ! ps aux | grep 'queue:listen --queue=dev_travelgbi' | grep -vq grep; then php /var/www/travelgbi/api/dev/current/artisan queue:listen --queue=dev_travelgbi --env=dev --tries=3; fi
+* * * * * if ! ps aux | grep 'queue:listen --queue=uat_travelgbi' | grep -vq grep; then php /var/www/travelgbi/api/uat/current/artisan queue:listen --queue=uat_travelgbi --env=uat --tries=3; fi
+* * * * * if ! ps aux | grep 'queue:listen --queue=stg_travelgbi' | grep -vq grep; then php /var/www/travelgbi/api/stg/current/artisan queue:listen --queue=stg_travelgbi --env=stg --tries=3; fi
+
+###############
+# wp-crons
+###############
+
+# dev
+* * * * * php /var/www/travelgbi/wp_cms/dev/current/web/wp/wp-cron.php > /dev/null 2>&1
+# uat
+* * * * * php /var/www/travelgbi/wp_cms/uat/current/web/wp/wp-cron.php > /dev/null 2>&1
+# stg
+* * * * * php /var/www/travelgbi/wp_cms/stg/current/web/wp/wp-cron.php > /dev/null 2>&1

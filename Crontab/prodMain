@@ -1,0 +1,25 @@
+# PROD - Main
+
+# TravelWeekly - Sitemap
+0 */6 * * * if ! ps auwwx | grep "app:sitemap:generate --env=prod" | grep -v grep; then /var/www/travelweekly/api_v2/prod/current/bin/console app:sitemap:generate --env=prod --z=travelweekly ; fi
+
+# TheCaterer - Sitemap
+0 */6 * * * if ! ps auwwx | grep "app:sitemap:generate --env=prod" | grep -v grep; then /var/www/thecaterer/api/prod/current/bin/console app:sitemap:generate --env=prod --z=thecaterer ; fi
+
+
+# TravelWeekly - Forwardkeys
+0 8 * * * if ! ps auwwx | grep "forwardkeys:fetchData --env=prod" | grep -v grep; then /var/www/travelweekly/api_v2/prod/current/bin/console forwardkeys:fetchData  --env=prod --z=travelweekly; fi
+0 11 * * * if ! ps auwwx | grep "forwardkeys:fetchData --env=prod " | grep -v grep; then /var/www/travelweekly/api_v2/prod/current/bin/console forwardkeys:fetchData  --env=prod --z=travelweekly; fi
+
+# Beanstalkd queue
+* * * * * if ! ps aux | grep 'queue:listen --queue=prod_thecaterer' | grep -vq grep; then php /var/www/thecaterer/api/prod/current/artisan queue:listen --queue=prod_thecaterer --env=prod --tries=3; fi
+* * * * * if ! ps aux | grep 'queue:listen --queue=prod_travelweekly' | grep -vq grep; then php /var/www/travelweekly/api_v2/prod/current/artisan queue:listen --queue=prod_travelweekly --env=prod --tries=3; fi
+
+
+###############
+# wp-crons
+###############
+
+#prod
+* * * * * php /var/www/travelweekly/wp_cms/prod/current/web/wp/wp-cron.php > /dev/null 2>&1
+* * * * * php /var/www/thecaterer/wp_cms/prod/current/web/wp/wp-cron.php > /dev/null 2>&1

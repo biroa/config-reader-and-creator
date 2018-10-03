@@ -1,0 +1,23 @@
+# PROD - Remaining
+
+###############
+# Beanstalkd queue:listens
+###############
+
+# ConnectingTravel
+* * * * * if ! ps aux | grep 'queue:listen --queue=prod_connectingtravel' | grep -vq grep; then php /var/www/connectingtravel/api/prod/current/artisan queue:listen --queue=prod_connectingtravel --env=prod --tries=3; fi
+
+# Travolution
+* * * * * if ! ps aux | grep 'queue:listen --queue=prod_travolution' | grep -vq grep; then php /var/www/travolution/api/prod/current/artisan queue:listen --queue=prod_travolution --env=prod --tries=3; fi
+
+# TravelGbi
+* * * * * if ! ps aux | grep 'queue:listen --queue=prod_travelgbi' | grep -vq grep; then php /var/www/travelgbi/api/prod/current/artisan queue:listen --queue=prod_travelgbi --env=prod --tries=3; fi
+
+###############
+# wp-crons
+###############
+
+* * * * * php /var/www/travelgbi/wp_cms/prod/current/web/wp/wp-cron.php > /dev/null 2>&1
+* * * * * php /var/www/travolution/wp_cms/prod/current/web/wp/wp-cron.php > /dev/null 2>&1
+* * * * * php /var/www/connectingtravel/wp_cms/prod/current/web/wp/wp-cron.php > /dev/null 2>&1
+
